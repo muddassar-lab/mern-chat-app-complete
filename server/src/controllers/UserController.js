@@ -14,10 +14,7 @@ const login = asyncHandler(async (req, res) => {
         throw new Error('Please fill out all the fields')
     }
     // Check if user exists and populate the friends
-    const user = await User.findOne({ email }).populate(
-        'friends',
-        '_id name picture email'
-    )
+    const user = await User.findOne({ email })
     // checking user and matching password hash
     if (user && (await matchPassword(password, user.password))) {
         res.status(200).json({

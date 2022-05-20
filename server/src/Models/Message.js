@@ -9,12 +9,19 @@ const messageSchema = new mongoose.Schema({
     chat: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Chat',
+        autoPopulate: {
+            select: '-users',
+        },
     },
     sender: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+        autoPopulate: {
+            select: '-password',
+        },
     },
 })
+messageSchema.plugin(require('mongoose-autopopulate'))
 
 const Message = mongoose.model('Message', messageSchema)
 module.exports = Message

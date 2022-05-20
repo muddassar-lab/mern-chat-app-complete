@@ -9,18 +9,19 @@ const {
     leaveGroupChat,
     removeUserFromGroupChat,
 } = require('../controllers/ChatController')
+const { AuthMiddleware } = require('../middlewares/AuthMiddleware')
 
 const router = express.Router()
 // Chat Routes
-router.route('/access').post(accessChat)
-router.route('/fetch').post(fetchChats)
+router.route('/access').post(AuthMiddleware, accessChat)
+router.route('/fetch').post(AuthMiddleware, fetchChats)
 // Group Routes
-router.route('/group/create').post(createGroupChat)
-router.route('/group/update').put(updateGroupChat)
-router.route('/group/delete').delete(deleteGroupChat)
+router.route('/group/create').post(AuthMiddleware, createGroupChat)
+router.route('/group/update').put(AuthMiddleware, updateGroupChat)
+router.route('/group/delete').delete(AuthMiddleware, deleteGroupChat)
 // Group User Routes
-router.route('group/user/add').post(addUserToGroupChat)
-router.route('group/user/leave').put(leaveGroupChat)
-router.route('group/user/remove').post(removeUserFromGroupChat)
+router.route('/group/user/add').put(AuthMiddleware, addUserToGroupChat)
+router.route('/group/user/leave').put(AuthMiddleware, leaveGroupChat)
+router.route('/group/user/remove').put(AuthMiddleware, removeUserFromGroupChat)
 
 module.exports = router
