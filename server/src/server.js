@@ -7,7 +7,6 @@ const path = require('path')
 const cors = require('cors')
 const helmet = require('helmet')
 const mongoSanitize = require('express-mongo-sanitize')
-const mongoose = require('mongoose')
 const { red, bold } = require('colorette')
 
 const connectToDatabase = require('./database/database')
