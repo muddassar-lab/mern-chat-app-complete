@@ -1,6 +1,6 @@
 const express = require('express')
-const { chatController } = require('../controllers')
 
+const { chatController } = require('../controllers')
 const {
     AuthMiddleware,
     GroupAdminMiddleware,

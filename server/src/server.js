@@ -9,11 +9,13 @@ const helmet = require('helmet')
 const mongoSanitize = require('express-mongo-sanitize')
 const mongoose = require('mongoose')
 const { red, bold } = require('colorette')
+
 const connectToDatabase = require('./database/database')
 const onSocketConnection = require('./socket/socket')
 
 const { userRoutes, chatRoutes, messageRoutes } = require('./routes')
 const { notFound, errorHandler } = require('./middlewares')
+
 // Environment Variables
 const PORT = process.env.PORT || 5000
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/chat-app'
@@ -58,7 +60,7 @@ app.use(errorHandler)
 
 // Socket Initialization
 const io = socket(server)
-io.on('connection', onSocketConnection)
+io.on('connection', (userSocket) => onSocketConnection(io, userSocket))
 
 // database
 connectToDatabase(MONGO_URI)
