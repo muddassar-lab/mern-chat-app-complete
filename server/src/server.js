@@ -42,11 +42,11 @@ app.use('/api/chat', chatRoutes)
 app.use('/api/message', messageRoutes)
 
 // Deployment
-const _dirname1 = path.resolve('../')
+const _dirname1 = path.resolve()
 if (NODE_ENV === 'production') {
-    app.use(express.static(path.join(_dirname1, '/frontend/build')))
+    app.use(express.static(path.join(_dirname1, '/client/build')))
     app.get('*', (req, res) => {
-        res.sendFile(path.resolve(_dirname1, 'frontend', 'build', 'index.html'))
+        res.sendFile(path.resolve(_dirname1, 'client', 'build', 'index.html'))
     })
 } else {
     app.get('/', (req, res) => {
