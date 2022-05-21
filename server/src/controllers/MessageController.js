@@ -2,18 +2,18 @@ const asyncHandler = require('express-async-handler')
 const { Message, Chat } = require('../Models')
 
 const send = asyncHandler(async (req, res) => {
-    const { content, chatID } = req.body
+    const { content } = req.body
+    const { chat, user } = req
     try {
         const message = await Message.create({
-            sender: req.user._id,
+            sender: user._id,
             content,
-            chat: req.chat._id,
+            chat: chat._id,
         })
         if (message) {
-            const chat = await Chat.findByIdAndUpdate(chatID, {
-                latestMessage: message._id,
-            })
-            if (chat) {
+            chat.latestMessage = message._id
+            const updatedChat = await chat.save()
+            if (updatedChat) {
                 res.status(200).json(message)
             } else {
                 res.status(400).json({
@@ -30,10 +30,10 @@ const send = asyncHandler(async (req, res) => {
     }
 })
 const fetch = asyncHandler(async (req, res) => {
-    const { chatID } = req.body
+    const { chat } = req
     try {
         const messages = await Message.find({
-            chat: chatID,
+            chat: chat._id,
         })
         if (messages) {
             res.status(200).json(messages)
