@@ -11,8 +11,9 @@ const mongoose = require('mongoose')
 const { red, bold } = require('colorette')
 const connectToDatabase = require('./database/database')
 const onSocketConnection = require('./socket/socket')
-const { notFound, errorHandler } = require('./middlewares/ErrorMiddleware')
-const { userRoutes, chatRoutes } = require('./routes')
+
+const { userRoutes, chatRoutes, messageRoutes } = require('./routes')
+const { notFound, errorHandler } = require('./middlewares')
 // Environment Variables
 const PORT = process.env.PORT || 5000
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/chat-app'
@@ -37,6 +38,7 @@ app.use(mongoSanitize())
 // App Routes
 app.use('/api/user', userRoutes)
 app.use('/api/chat', chatRoutes)
+app.use('/api/message', messageRoutes)
 
 // Deployment
 const _dirname1 = path.resolve('../')
