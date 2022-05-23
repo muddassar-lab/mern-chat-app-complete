@@ -14,7 +14,7 @@ import { AuthState } from '../../Context/Auth/AuthContext'
 import { useNavigate } from 'react-router-dom'
 const Login = () => {
     const navigate = useNavigate()
-    const { login, register, loading, user } = AuthState()
+    const { login, loading } = AuthState()
     const toast = useToast()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -55,7 +55,7 @@ const Login = () => {
         >
             <Box
                 w={'400px'}
-                h={'500px'}
+                h={'450px'}
                 bgColor="white"
                 padding={'3'}
                 margin="40px 0 15px 0"
@@ -89,6 +89,15 @@ const Login = () => {
                         colorScheme={'facebook'}
                     >
                         Login
+                    </Button>
+                    <Button
+                        w={'100%'}
+                        size="lg"
+                        onClick={() => navigate('/register')}
+                        variant="outline"
+                        colorScheme={'facebook'}
+                    >
+                        Register
                     </Button>
                 </VStack>
             </Box>
