@@ -9,29 +9,37 @@ import {
     useToast,
     VStack,
 } from '@chakra-ui/react'
-import api from '../../Api/api'
+
+import { AuthState } from '../../Context/Auth/AuthContext'
+import { useNavigate } from 'react-router-dom'
 const Login = () => {
+    const navigate = useNavigate()
+    const { login, register, loading, user } = AuthState()
     const toast = useToast()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [loading, setLoading] = useState(false)
 
-    const submit = () => {
-        try {
-            setLoading(true)
-            if (!email || !password) {
-                throw new Error('Please fill all the fields')
-            }
-            const { data } = api.post('/user/login', { email, password })
-        } catch (error) {
-            setLoading(false)
+    const submit = async () => {
+        const { error, data } = await login(email, password)
+
+        if (data) {
             toast({
-                title: 'Error',
+                title: 'Success',
+                description: 'You have successfully logged in',
+                status: 'success',
+                duration: 2000,
+                isClosable: true,
+            })
+            navigate('/')
+        }
+        if (error) {
+            toast({
+                title: 'An Error Occured',
                 description: error.response
                     ? error.response.data.message
                     : error.message,
                 status: 'error',
-                duration: 9000,
+                duration: 2000,
                 isClosable: true,
             })
         }
@@ -51,7 +59,7 @@ const Login = () => {
                 bgColor="white"
                 padding={'3'}
                 margin="40px 0 15px 0"
-                borderRadius={'20px'}
+                borderRadius={'10px'}
                 boxShadow="dark-lg"
             >
                 <Text fontSize={'5xl'} fontWeight="bold" color={'facebook.500'}>
@@ -69,7 +77,8 @@ const Login = () => {
                         <FormLabel fontWeight={'bold'}>Password</FormLabel>
                         <Input
                             placeholder="Password"
-                            onChange={(e) => setEmail(e.target.value)}
+                            type={'password'}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                     </FormControl>
                     <Button
